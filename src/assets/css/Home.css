@@ -1,0 +1,632 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body{
+  height: 100%;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ================= SHARED BACKGROUND ================= */
+/* All sections share the same gradient to avoid visible divisions */
+.hero-section,
+.letter-section,
+.carousel-section {
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #fce4ec 100%);
+  position: relative;
+}
+
+/* ================= FLOATING FLOWERS (SHARED) ================= */
+.floating-flowers-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.flower-bg {
+  position: absolute;
+  font-size: 2rem;
+  animation: floatFlower linear infinite;
+}
+
+@keyframes floatFlower {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ================= HERO SECTION ================= */
+.container-main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Wish Text Styling */
+.wish-text h1 {
+  line-height: 1.2;
+}
+
+.wish-text h1 span {
+  display: inline-block;
+}
+
+/* Polaroid Styling */
+.polaroid {
+  background: white;
+  padding: 12px;
+  padding-bottom: 50px;
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 10px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  width: 220px;
+}
+
+.polaroid:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 
+    0 8px 12px rgba(0, 0, 0, 0.15),
+    0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.polaroid-photo {
+  width: 100%;
+  height: 220px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.polaroid-caption {
+  margin-top: 12px;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* ================= LETTER SECTION ================= */
+/* Vintage Paper */
+.vintage-paper {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  width: 90%;
+  background: linear-gradient(
+    to bottom,
+    #fef9f3 0%,
+    #fdf6ec 100%
+  );
+  padding: 3rem 2.5rem;
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    inset 0 0 60px rgba(139, 69, 19, 0.03);
+  border: 1px solid rgba(139, 69, 19, 0.1);
+}
+
+/* Paper texture overlay */
+.vintage-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 69, 19, 0.02) 2px,
+      rgba(139, 69, 19, 0.02) 4px
+    );
+  pointer-events: none;
+}
+
+/* Aged paper edges effect */
+.vintage-paper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 100px rgba(139, 69, 19, 0.05);
+  pointer-events: none;
+}
+
+.paper-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Letter Header */
+.letter-header {
+  margin-bottom: 2rem;
+  text-align: right;
+}
+
+.letter-date {
+  font-family: 'Georgia', serif;
+  font-size: 0.9rem;
+  color: #8b4513;
+  font-style: italic;
+}
+
+/* Letter Body */
+.letter-body {
+  line-height: 1.8;
+}
+
+.letter-line {
+  margin-bottom: 1.2rem;
+}
+
+.letter-greeting {
+  font-family: 'Georgia', serif;
+  font-size: 1.3rem;
+  color: #c44569;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.letter-text {
+  font-family: 'Georgia', serif;
+  font-size: 1.05rem;
+  color: #4a4a4a;
+  text-align: justify;
+  line-height: 1.9;
+}
+
+.letter-closing {
+  font-family: 'Georgia', serif;
+  font-size: 1.05rem;
+  color: #4a4a4a;
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.signature {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 1.8rem;
+  color: #c44569;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+/* Vintage Wax Seal */
+.heart-stamp {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+}
+
+/* ================= CAROUSEL SECTION ================= */
+.carousel-title {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.carousel-container {
+  position: relative;
+}
+
+.cards-wrapper {
+  position: relative;
+  min-height: 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Carousel Cards */
+.carousel-card {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  background: white;
+  padding: 16px;
+  padding-bottom: 60px;
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  height: 380px;
+  overflow: hidden;
+}
+
+.carousel-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.carousel-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Carousel Caption */
+.carousel-caption {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  color: #333;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Side Cards (Smaller) */
+.side-card {
+  transform: scale(0.8) translateY(20px);
+  opacity: 0.7;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.side-card:hover {
+  opacity: 0.9;
+  transform: scale(0.85) translateY(15px);
+}
+
+.side-card .carousel-caption {
+  font-size: 0.85rem;
+}
+
+/* Center Card (Larger) */
+.center-card {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 10;
+  width: 350px;
+  height: 480px;
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.2),
+    0 30px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Navigation Buttons */
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #c44569;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 20;
+  color: #c44569;
+}
+
+.carousel-nav-btn:hover {
+  background: #c44569;
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 12px rgba(196, 69, 105, 0.3);
+}
+
+.carousel-nav-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-nav-left {
+  left: -25px;
+}
+
+.carousel-nav-right {
+  right: -25px;
+}
+
+/* Dots Indicator */
+.dots-container {
+  position: relative;
+  z-index: 10;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid #c44569;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dot:hover {
+  background: rgba(196, 69, 105, 0.5);
+  transform: scale(1.2);
+}
+
+.dot.active {
+  background: #c44569;
+  width: 32px;
+  border-radius: 6px;
+}
+
+/* Progress Bar */
+.carousel-progress-container {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 4px;
+  background: rgba(196, 69, 105, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.carousel-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #c44569, #ff6b9d);
+  border-radius: 2px;
+  transform-origin: left;
+  animation: progressBar 5s linear infinite;
+}
+
+@keyframes progressBar {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* Slide Animation Keyframes */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+/* Hero Section Responsive */
+@media (max-width: 1024px) {
+  .container-main {
+    flex-direction: column;
+    gap: 3rem;
+    padding: 4rem 2rem;
+  }
+
+  .wish-text h1 {
+    font-size: 3.5rem;
+    text-align: center;
+  }
+
+  .polaroids-container {
+    height: 500px;
+    width: 100%;
+  }
+
+  .polaroid {
+    width: 180px;
+  }
+
+  .polaroid-photo {
+    height: 180px;
+  }
+}
+
+@media (max-width: 640px) {
+  .wish-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .polaroid {
+    width: 140px;
+  }
+
+  .polaroid-photo {
+    height: 140px;
+  }
+}
+
+/* Letter Section Responsive */
+@media (max-width: 768px) {
+  .vintage-paper {
+    padding: 2rem 1.5rem;
+    max-width: 95%;
+  }
+
+  .letter-greeting {
+    font-size: 1.1rem;
+  }
+
+  .letter-text {
+    font-size: 0.95rem;
+  }
+
+  .signature {
+    font-size: 1.5rem;
+  }
+
+  .heart-stamp {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .heart-stamp > div {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .heart-stamp svg {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .vintage-paper {
+    padding: 1.5rem 1rem;
+  }
+
+  .letter-text {
+    font-size: 0.9rem;
+    text-align: left;
+  }
+
+  .heart-stamp > div {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  .heart-stamp svg {
+    width: 35px !important;
+    height: 35px !important;
+  }
+}
+
+/* Carousel Section Responsive */
+@media (max-width: 1024px) {
+  .carousel-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .cards-wrapper {
+    min-height: 380px;
+  }
+
+  .carousel-card {
+    width: 220px;
+    height: 320px;
+  }
+
+  .center-card {
+    width: 280px;
+    height: 400px;
+  }
+
+  .carousel-nav-left {
+    left: -15px;
+  }
+
+  .carousel-nav-right {
+    right: -15px;
+  }
+
+  .carousel-nav-btn {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-title {
+    font-size: 2rem;
+    padding: 0 1rem;
+  }
+
+  .side-card {
+    display: none;
+  }
+
+  .cards-wrapper {
+    min-height: 450px;
+    justify-content: center;
+  }
+
+  .center-card {
+    width: 300px;
+    height: 420px;
+  }
+
+  .carousel-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .carousel-nav-left {
+    left: 10px;
+  }
+
+  .carousel-nav-right {
+    right: 10px;
+  }
+
+  .carousel-progress-container {
+    width: 150px;
+    bottom: -25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-title {
+    font-size: 1.5rem;
+  }
+
+  .center-card {
+    width: 260px;
+    height: 360px;
+  }
+
+  .carousel-nav-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-caption {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+
+  .carousel-progress-container {
+    width: 120px;
+    bottom: -20px;
+  }
+}

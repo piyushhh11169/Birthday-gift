@@ -1,0 +1,388 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// ==============================================
+// UTILITY FUNCTIONS
+// ==============================================
+
+/**
+ * Simple SHA-256 hash function for client-side hashing
+ * @param {string} message - The string to hash
+ * @returns {Promise<string>} - Hex encoded hash
+ */
+async function sha256Hash(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex;
+}
+
+/**
+ * Supabase client initialization
+ * NOTE: In production, set these in your .env file:
+ * VITE_SUPABASE_URL=your_supabase_url
+ * VITE_SUPABASE_ANON_KEY=your_anon_key
+ */
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'YOUR_SUPABASE_URL';
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
+
+/**
+ * Fetch authentication credentials from Supabase
+ * Table structure expected:
+ * - Table name: auth_credentials
+ * - Columns: id, secret_code_hash, question_answer_hash
+ * 
+ * @returns {Promise<Object>} - Object with hashed credentials
+ */
+async function fetchAuthCredentials() {
+  try {
+    const response = await fetch(`${supabaseUrl}/rest/v1/auth_credentials?select=*&limit=1`, {
+      headers: {
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`,
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch credentials');
+    }
+    
+    const data = await response.json();
+    return data[0] || null;
+  } catch (error) {
+    console.error('Error fetching credentials:', error);
+    return null;
+  }
+}
+
+/**
+ * Store unlock status in localStorage
+ */
+function setUnlocked() {
+  localStorage.setItem('birthday_unlocked', 'true');
+  localStorage.setItem('unlock_timestamp', new Date().toISOString());
+}
+
+/**
+ * Check if already unlocked
+ */
+function isUnlocked() {
+  return localStorage.getItem('birthday_unlocked') === 'true';
+}
+
+// ==============================================
+// FLOATING LABEL INPUT COMPONENT
+// ==============================================
+
+const FloatingInput = ({ id, label, type, value, onChange, error, onKeyDown }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const hasValue = value.length > 0;
+
+  return (
+    <div className="relative mb-6">
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        className={`
+          w-full px-4 pt-6 pb-2 bg-white/40 backdrop-blur-sm
+          border-2 rounded-xl transition-all duration-300
+          focus:outline-none focus:bg-white/60
+          ${error 
+            ? 'border-rose-400 focus:border-rose-500' 
+            : 'border-pink-200 focus:border-pink-400'
+          }
+        `}
+      />
+      <label
+        htmlFor={id}
+        className={`
+          absolute left-4 transition-all duration-300 pointer-events-none
+          ${isFocused || hasValue
+            ? 'top-2 text-xs text-pink-600 font-medium'
+            : 'top-4 text-base text-gray-500'
+          }
+        `}
+      >
+        {label}
+      </label>
+      {error && (
+        <motion.p
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-rose-500 text-sm mt-1 ml-1"
+        >
+          {error}
+        </motion.p>
+      )}
+    </div>
+  );
+};
+
+// ==============================================
+// MAIN AUTH COMPONENT
+// ==============================================
+
+export default function BirthdayAuth() {
+  const [secretCode, setSecretCode] = useState('');
+  const [personalAnswer, setPersonalAnswer] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [shake, setShake] = useState(false);
+
+  // Check if already unlocked on mount
+  useEffect(() => {
+    if (isUnlocked()) {
+      // Redirect to main birthday page
+      setShowSuccess(true);
+      setTimeout(() => {
+        // In production, use: window.location.href = '/birthday';
+        alert('Redirecting to birthday page... (In production, this would navigate to the main page)');
+      }, 2000);
+    }
+  }, []);
+
+  /**
+   * Handle authentication
+   */
+  const handleAuthenticate = async () => {
+    setError('');
+    setShake(false);
+
+    // Validate inputs
+    if (!secretCode.trim() || !personalAnswer.trim()) {
+      setError('Please fill in both fields, my love 💕');
+      setShake(true);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Fetch stored credentials from Supabase
+      const credentials = await fetchAuthCredentials();
+      
+      if (!credentials) {
+        setError('Oops! Something went wrong. Please try again 🌸');
+        setShake(true);
+        setIsLoading(false);
+        return;
+      }
+
+      // Hash user inputs
+      const [secretCodeHash, answerHash] = await Promise.all([
+        sha256Hash(secretCode.trim()),
+        sha256Hash(personalAnswer.trim().toLowerCase()), // Case-insensitive
+      ]);
+
+      // Compare hashes
+      const secretMatch = secretCodeHash === credentials.secret_code_hash;
+      const answerMatch = answerHash === credentials.question_answer_hash;
+
+      if (secretMatch && answerMatch) {
+        // SUCCESS! 🎉
+        setShowSuccess(true);
+        setUnlocked();
+        
+        // Redirect after animation
+        setTimeout(() => {
+          // In production: window.location.href = '/birthday';
+          alert('Access granted! Redirecting to your special page... 💖');
+        }, 2000);
+      } else {
+        // Authentication failed
+        setError('Hmm, that doesn\'t seem quite right. Try again? 🌹');
+        setShake(true);
+        setSecretCode('');
+        setPersonalAnswer('');
+      }
+    } catch (err) {
+      console.error('Auth error:', err);
+      setError('Something magical went wrong. Please try again ✨');
+      setShake(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle Enter key press
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !isLoading) {
+      handleAuthenticate();
+    }
+  };
+
+  return (
+    <div className="min-h-screen w-full flex items-center justify-center p-4 bg-gradient-to-br from-pink-100 via-rose-50 to-purple-100">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-20 left-10 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
+          animate={{
+            x: [0, -100, 0],
+            y: [0, -50, 0],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      </div>
+
+      {/* Success overlay */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.8 }}
+              className="text-center"
+            >
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+                className="text-9xl mb-4"
+              >
+                🎉
+              </motion.div>
+              <h2 className="text-4xl md:text-6xl font-bold text-white mb-4">
+                Welcome, Beautiful! 💖
+              </h2>
+              <p className="text-xl text-white/90">
+                Preparing your special surprise...
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Auth modal */}
+      <motion.div
+        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+        animate={{ 
+          opacity: 1, 
+          y: 0, 
+          scale: 1,
+          x: shake ? [0, -10, 10, -10, 10, 0] : 0
+        }}
+        transition={{ 
+          duration: 0.6, 
+          type: "spring",
+          x: { duration: 0.4 }
+        }}
+        className="relative w-full max-w-md"
+      >
+        <div className="bg-white/30 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8 md:p-10">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-center mb-8"
+          >
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              className="text-6xl mb-4"
+            >
+              🎂
+            </motion.div>
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              A Special Day Awaits
+            </h1>
+            <p className="text-gray-600 text-sm">
+              Answer these to unlock your surprise 💝
+            </p>
+          </motion.div>
+
+          {/* Input fields */}
+          <div className="space-y-4">
+            <FloatingInput
+              id="secretCode"
+              label="Secret Code 🔒"
+              type="password"
+              value={secretCode}
+              onChange={(e) => setSecretCode(e.target.value)}
+              onKeyDown={handleKeyDown}
+              error={error && !secretCode ? error : ''}
+            />
+
+            <FloatingInput
+              id="personalAnswer"
+              label="Where did we first meet? 💕"
+              type="text"
+              value={personalAnswer}
+              onChange={(e) => setPersonalAnswer(e.target.value)}
+              onKeyDown={handleKeyDown}
+              error={error && secretCode ? error : ''}
+            />
+
+            {/* Submit button */}
+            <motion.button
+              onClick={handleAuthenticate}
+              disabled={isLoading}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`
+                w-full py-4 rounded-xl font-semibold text-white
+                transition-all duration-300 shadow-lg
+                ${isLoading
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600'
+                }
+              `}
+            >
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                  />
+                  Checking...
+                </span>
+              ) : (
+                'Unlock My Surprise 🎁'
+              )}
+            </motion.button>
+          </div>
+
+          {/* Footer hint */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-center text-xs text-gray-500 mt-6"
+          >
+            Made with 💖 just for you
+          </motion.p>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
