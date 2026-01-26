@@ -6,7 +6,7 @@ import AuthDialog from '../Components/AuthDialog';
  * AuthLayout wrapper handles redirection to home after successful authentication
  */
 const AuthPage: React.FC = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(true);
+  const [isDialogOpen] = useState<boolean>(true);
 
   const handleCloseDialog = (): void => {
     // Prevent closing - user must authenticate

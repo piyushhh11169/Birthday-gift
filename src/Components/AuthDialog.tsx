@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { loginWithSecretKey, clearAuthError } from '../redux/features/auth/auhtSlice';
+import { loginWithSecretKey } from '../redux/features/auth/auhtSlice';
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -32,13 +32,7 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose }) => {
     await dispatch(loginWithSecretKey(secretKey));
   };
 
-  const handleClose = (): void => {
-    // Prevent closing - user must authenticate or use Cancel button
-    // Comment out to allow closing
-    // setSecretKey('');
-    // dispatch(clearAuthError());
-    // onClose();
-  };
+  
 
   if (!isOpen) {
     return null;
