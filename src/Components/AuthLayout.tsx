@@ -1,55 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { checkAuthSession } from '../redux/features/auth/auhtSlice';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
-  authentication?: boolean;
+  authentication: boolean; // true = requires auth, false = public route
 }
 
-/**
- * AuthLayout - Route protection wrapper
- * @param authentication - true = requires auth, false = requires no auth
- * 
- * Examples:
- * <AuthLayout authentication={true}><Home /></AuthLayout>  // Protected route
- * <AuthLayout authentication={false}><Login /></AuthLayout>  // Public only route
- */
-export default function AuthLayout({ 
-  children, 
-  authentication = true 
-}: AuthLayoutProps) {
+const AuthLayout: React.FC<AuthLayoutProps> = ({ children, authentication }) => {
   const navigate = useNavigate();
-  const [loader, setLoader] = useState(true);
-  const authStatus = useAppSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useAppDispatch();
+  const { isAuthenticated, status } = useAppSelector((state) => state.auth);
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    // If route requires authentication but user is not authenticated
-    if (authentication && !authStatus) {
-      navigate('/auth');
-    } 
-    // If route requires NO authentication (login page) but user IS authenticated
-    else if (!authentication && authStatus) {
-      navigate('/');
-    }
-    
-    setLoader(false);
-  }, [authStatus, navigate, authentication]);
+    // Check for existing session on mount
+    const initAuth = async () => {
+      await dispatch(checkAuthSession());
+      setIsChecking(false);
+    };
 
-  return loader ? (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      fontSize: '24px',
-      color: '#666'
-    }}>
-      Loading...
-    </div>
-  ) : (
-    <div style={{ width: '100%', height: '100%' }}>
-      {children}
-    </div>
-  );
-}
+    initAuth();
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Don't redirect while checking session
+    if (isChecking || status === 'loading') {
+      return;
+    }
+
+    if (authentication) {
+      // Protected route - requires authentication
+      if (!isAuthenticated) {
+        navigate('/auth');
+      }
+    } else {
+      // Public route (auth page) - redirect if already authenticated
+      if (isAuthenticated) {
+        navigate('/');
+      }
+    }
+  }, [isAuthenticated, authentication, navigate, isChecking, status]);
+
+  // Show loading while checking session
+  if (isChecking || status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return <>{children}</>;
+};
+
+export default AuthLayout;

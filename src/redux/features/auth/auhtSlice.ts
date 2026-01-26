@@ -1,122 +1,150 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { User, Session } from '@supabase/supabase-js';
-import { authService } from '../../../supabase/authService';
-import type { AuthState, AuthResponse } from '../../../types/auth';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import type { AuthState } from '../../../types/auth'
+
+// Valid secret keys (temporary — later replace with Supabase)
+const VALID_SECRET_KEYS = [
+  'DEV_SECRET_123',
+  'ADMIN_SECRET_456',
+]
 
 // Initial state
 const initialState: AuthState = {
-  user: null,
-  session: null,
   isAuthenticated: false,
   status: 'idle',
   error: null,
-};
+  secretKey: null,
+}
 
-// Async thunk for login with secret key
+// 🔐 Login with secret key
 export const loginWithSecretKey = createAsyncThunk<
-  { user: User; session: Session },
-  string,
+  string,               // return type
+  string,               // argument type
   { rejectValue: string }
 >(
   'auth/loginWithSecretKey',
-  async (secretKey: string, { rejectWithValue }) => {
-    const response: AuthResponse = await authService.loginWithSecretKey(secretKey);
+  async (secretKey, { rejectWithValue }) => {
+    await new Promise((resolve) => setTimeout(resolve, 500))
 
-    if (!response.success || !response.data) {
-      return rejectWithValue(response.error || 'Login failed');
+    if (!secretKey || secretKey.trim().length === 0) {
+      return rejectWithValue('Secret key is required')
     }
 
-    if (!response.data.user || !response.data.session) {
-      return rejectWithValue('Invalid authentication response');
+    if (!VALID_SECRET_KEYS.includes(secretKey.trim())) {
+      return rejectWithValue('Invalid secret key')
     }
 
-    return {
-      user: response.data.user,
-      session: response.data.session,
-    };
+    localStorage.setItem('auth_secret_key', secretKey.trim())
+    return secretKey.trim()
   }
-);
+)
 
-// Async thunk for logout
-export const logoutUser = createAsyncThunk<
-  void,
+// 🚪 Logout
+export const logoutUser = createAsyncThunk<void, void>(
+  'auth/logoutUser',
+  async () => {
+    localStorage.removeItem('auth_secret_key')
+    await new Promise((resolve) => setTimeout(resolve, 200))
+  }
+)
+
+// 🔁 Restore session
+export const checkAuthSession = createAsyncThunk<
+  string | null,
   void,
   { rejectValue: string }
 >(
-  'auth/logoutUser',
+  'auth/checkAuthSession',
   async (_, { rejectWithValue }) => {
-    try {
-      await authService.logout();
-    } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : 'Logout failed'
-      );
-    }
-  }
-);
+    const storedKey = localStorage.getItem('auth_secret_key')
 
-// Auth slice
+    if (!storedKey) {
+      return rejectWithValue('No stored session')
+    }
+
+    if (!VALID_SECRET_KEYS.includes(storedKey)) {
+      localStorage.removeItem('auth_secret_key')
+      return rejectWithValue('Invalid stored session')
+    }
+
+    return storedKey
+  }
+)
+
+// 🧠 Auth slice
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // Manual state reset
     resetAuthState: (state) => {
-      state.user = null;
-      state.session = null;
-      state.isAuthenticated = false;
-      state.status = 'idle';
-      state.error = null;
+      state.isAuthenticated = false
+      state.status = 'idle'
+      state.error = null
+      state.secretKey = null
+      localStorage.removeItem('auth_secret_key')
     },
-    // Clear error
     clearAuthError: (state) => {
-      state.error = null;
+      state.error = null
     },
   },
   extraReducers: (builder) => {
-    // Login with secret key
     builder
+      // Login
       .addCase(loginWithSecretKey.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
+        state.status = 'loading'
+        state.error = null
       })
       .addCase(
         loginWithSecretKey.fulfilled,
-        (state, action: PayloadAction<{ user: User; session: Session }>) => {
-          state.status = 'succeeded';
-          state.user = action.payload.user;
-          state.session = action.payload.session;
-          state.isAuthenticated = true;
-          state.error = null;
+        (state, action: PayloadAction<string>) => {
+          state.status = 'succeeded'
+          state.isAuthenticated = true
+          state.secretKey = action.payload
         }
       )
       .addCase(loginWithSecretKey.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload || 'Login failed';
-        state.user = null;
-        state.session = null;
-        state.isAuthenticated = false;
-      });
+        state.status = 'failed'
+        state.error = action.payload ?? 'Login failed'
+        state.isAuthenticated = false
+        state.secretKey = null
+      })
 
-    // Logout
-    builder
+      // Logout
       .addCase(logoutUser.pending, (state) => {
-        state.status = 'loading';
+        state.status = 'loading'
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        state.status = 'idle';
-        state.user = null;
-        state.session = null;
-        state.isAuthenticated = false;
-        state.error = null;
+        state.status = 'idle'
+        state.isAuthenticated = false
+        state.secretKey = null
+        state.error = null
       })
-      .addCase(logoutUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload || 'Logout failed';
-      });
-  },
-});
+      .addCase(logoutUser.rejected, (state) => {
+        state.status = 'idle'
+        state.isAuthenticated = false
+        state.secretKey = null
+        state.error = null
+      })
 
-export const { resetAuthState, clearAuthError } = authSlice.actions;
-export default authSlice.reducer;
+      // Restore session
+      .addCase(checkAuthSession.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(
+        checkAuthSession.fulfilled,
+        (state, action: PayloadAction<string | null>) => {
+          state.status = 'succeeded'
+          state.isAuthenticated = true
+          state.secretKey = action.payload
+        }
+      )
+      .addCase(checkAuthSession.rejected, (state) => {
+        state.status = 'idle'
+        state.isAuthenticated = false
+        state.secretKey = null
+      })
+  },
+})
+
+export const { resetAuthState, clearAuthError } = authSlice.actions
+export default authSlice.reducer

@@ -5,17 +5,8 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        // Ignore these action types
-        ignoredActions: ['auth/loginWithSecretKey/fulfilled'],
-        // Ignore these paths in the state
-        ignoredPaths: ['auth.user', 'auth.session'],
-      },
-    }),
+  // No need for serializableCheck middleware anymore
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
