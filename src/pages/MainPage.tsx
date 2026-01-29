@@ -283,21 +283,21 @@ export default function MainPage() {
               <div className="polaroid-photo">
                 <img src={hero1} className="w-full h-full object-cover" alt="Memory 1" />
               </div>
-              <p className="polaroid-caption">Memory 1</p>
+              <p className="polaroid-caption"></p>
             </div>
 
             <div className="polaroid absolute" style={{ transform: 'rotate(5deg)', left: '25%', top: '25%' }}>
               <div className="polaroid-photo bg-gradient-to-br from-blue-200 to-pink-200">
               <img src={hero2} className="w-full h-full object-cover" alt="Memory 2" />
               </div>
-              <p className="polaroid-caption">Memory 2</p>
+              <p className="polaroid-caption"></p>
             </div>
 
             <div className="polaroid absolute" style={{ transform: 'rotate(9deg)', right: '6%', top: '5%' }}>
               <div className="polaroid-photo bg-gradient-to-br from-yellow-200 to-pink-200">
               <img src={hero3} className="w-full h-full object-full" alt="Memory 2" />
               </div>
-              <p className="polaroid-caption">Memory 3</p>
+              <p className="polaroid-caption"></p>
             </div>
           </div>
         </div>
@@ -354,9 +354,6 @@ I know maine aapke liye kuch gift nhi liya, but gift to aapko in-person dunga ðŸ
               </p>
 
               <p className="letter-line letter-text">
-              (pata nhi aaj itna kese likh diya maine) 
-              </p>
-              <p className="letter-line letter-text">
               I come to know about this beautifull feeling because of you
 You are the reason I belive in love, maine abhi tk kisi ke liye bhi aisa feel nhi kiya jesa mai aapke liye krta hun... I LOVE YOU.
               </p>
@@ -366,6 +363,9 @@ You are the reason I belive in love, maine abhi tk kisi ke liye bhi aisa feel nh
               <p className="letter-line letter-text">
               Wese aaj birthday to aapka h, but you give me gifts everyday by saying I LOVE YOU
 and I will never forget the day when you say I love you first time. that day was the best day of my life.
+              </p>
+              <p className="letter-line letter-text">
+              (pata nhi aaj itna kese likh diya maine) 
               </p>
               <p className="letter-line letter-text">
               Aur aapki beauty ki kya hi baat kru mai, every time I start admiring you, I end up never satisfied because the more I see you, the more I want. As I said earlier, In a most selfish way, no one will admire you the way I admires you.
