@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import { useRef, useState, useEffect } from 'react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
-import tempPhoto from '../assets/temp/tempPhoto.jpg';
+
 import '../assets/css/Home.css';
 
 import hero1 from '../assets/Collage/2.jpg';
