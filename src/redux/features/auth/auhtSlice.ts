@@ -6,6 +6,7 @@ import type { AuthState } from '../../../types/auth'
 const VALID_SECRET_KEYS = [
   'DEV_SECRET_123',
   'ADMIN_SECRET_456',
+  'i love you'
 ]
 
 // Initial state

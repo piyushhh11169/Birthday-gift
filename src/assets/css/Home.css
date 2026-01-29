@@ -56,6 +56,49 @@ body{
 }
 
 /* ================= HERO SECTION ================= */
+.logout-btn {
+  position: absolute;
+  top: 1.5rem;      /* top-6 */
+  right: 1.5rem;    /* right-6 */
+  z-index: 50;
+  padding: 6px;
+
+  /* Gradient */
+  background: linear-gradient(to right, #f43f5e, #ec4899);
+
+  color: #ffffff;
+  font-weight: 500;
+
+  /* Shape */
+  border-radius: 9999px; /* rounded-full */
+  border: 2px solid #fecdd3; /* border-rose-200 */
+
+  /* Layout */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+
+  /* Shadow */
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  /* Animation */
+  transition: all 300ms ease;
+}
+
+/* Hover effects */
+.logout-btn:hover {
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.15),
+    0 8px 10px -6px rgba(0, 0, 0, 0.15);
+
+  transform: scale(1.05);
+}
+
+
+
+
 .container-main {
   position: relative;
   z-index: 1;
@@ -109,12 +152,31 @@ body{
 }
 
 /* ================= LETTER SECTION ================= */
+
+.box-blur{
+  position: absolute;
+  background: #000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.3);
+  filter: blur(100px);
+  z-index: 100;
+}
+
+
+
+
+
 /* Vintage Paper */
 .vintage-paper {
   position: relative;
   z-index: 1;
   max-width: 700px;
   width: 90%;
+  max-height: 80vh;
   background: linear-gradient(
     to bottom,
     #fef9f3 0%,
@@ -126,6 +188,27 @@ body{
     0 20px 40px rgba(0, 0, 0, 0.08),
     inset 0 0 60px rgba(139, 69, 19, 0.03);
   border: 1px solid rgba(139, 69, 19, 0.1);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar for vintage paper */
+.vintage-paper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.vintage-paper::-webkit-scrollbar-track {
+  background: rgba(139, 69, 19, 0.05);
+  border-radius: 4px;
+}
+
+.vintage-paper::-webkit-scrollbar-thumb {
+  background: rgba(139, 69, 19, 0.3);
+  border-radius: 4px;
+}
+
+.vintage-paper::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 69, 19, 0.5);
 }
 
 /* Paper texture overlay */
@@ -184,6 +267,7 @@ body{
 
 .letter-line {
   margin-bottom: 1.2rem;
+  font-family: "Romanesco", cursive;
 }
 
 .letter-greeting {
@@ -280,9 +364,16 @@ body{
   font-size: 0.95rem;
   color: #333;
   padding: 8px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.93);
+  /* border-radius: 4px; */
   font-weight: 500;
+
+  max-height: 80px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  backdrop-filter: blur(5px);
+  /* box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); */
+  line-height: 1;
 }
 
 /* Side Cards (Smaller) */
@@ -434,44 +525,321 @@ body{
 }
 
 /* ================= RESPONSIVE DESIGN ================= */
-/* Hero Section Responsive */
+/* ================= HERO SECTION MOBILE OPTIMIZED ================= */
+
+/* TABLET AND BELOW - 1024px */
 @media (max-width: 1024px) {
+  /* Container adjustments for mobile stacking */
   .container-main {
-    flex-direction: column;
-    gap: 3rem;
-    padding: 4rem 2rem;
+    flex-direction: column-reverse !important;
+    gap: 2rem;
+    padding: 2rem 1rem;
+  }
+
+  /* Polaroids container - centered layout */
+  .polaroids-container {
+    height: 70vh !important;
+    max-height: 600px;
+    min-height: 450px;
+    width: 100% !important;
+  }
+
+  /* Center text on mobile */
+  .wish-text {
+    text-align: center !important;
   }
 
   .wish-text h1 {
     font-size: 3.5rem;
-    text-align: center;
   }
 
-  .polaroids-container {
-    height: 500px;
-    width: 100%;
-  }
-
+  /* Base polaroid size - Tablet */
   .polaroid {
-    width: 180px;
+    width: 210px !important;
   }
 
   .polaroid-photo {
-    height: 180px;
+    height: 210px !important;
+  }
+
+  /* Left polaroid positioning */
+  .polaroid:nth-child(1) {
+    left: 5% !important;
+    top: 15% !important;
+    transform: rotate(-12deg) !important;
+    z-index: 1;
+  }
+
+  /* Center polaroid - larger and centered */
+  .polaroid:nth-child(2) {
+    left: 50% !important;
+    top: 20% !important;
+    transform: translateX(-50%) rotate(3deg) !important;
+    z-index: 3;
+    width: 240px !important;
+  }
+
+  .polaroid:nth-child(2) .polaroid-photo {
+    height: 240px !important;
+  }
+
+  /* Right polaroid positioning */
+  .polaroid:nth-child(3) {
+    right: 5% !important;
+    top: 18% !important;
+    left: auto !important;
+    transform: rotate(10deg) !important;
+    z-index: 2;
+  }
+
+  /* Hover effects */
+  .polaroid:nth-child(1):hover {
+    transform: rotate(-12deg) translateY(-10px) !important;
+  }
+
+  .polaroid:nth-child(2):hover {
+    transform: translateX(-50%) rotate(3deg) translateY(-10px) !important;
+  }
+
+  .polaroid:nth-child(3):hover {
+    transform: rotate(10deg) translateY(-10px) !important;
   }
 }
 
+/* MEDIUM TABLETS - 768px */
+@media (max-width: 768px) {
+  .polaroids-container {
+    height: 65vh !important;
+    max-height: 550px;
+    min-height: 400px;
+  }
+
+  .wish-text h1 {
+    font-size: 2.8rem;
+  }
+
+  /* Slightly smaller polaroids */
+  .polaroid {
+    width: 190px !important;
+  }
+
+  .polaroid-photo {
+    height: 190px !important;
+  }
+
+  /* Adjust positioning */
+  .polaroid:nth-child(1) {
+    left: 3% !important;
+    top: 18% !important;
+    transform: rotate(-10deg) !important;
+  }
+
+  .polaroid:nth-child(2) {
+    left: 50% !important;
+    top: 23% !important;
+    transform: translateX(-50%) rotate(2deg) !important;
+    width: 220px !important;
+  }
+
+  .polaroid:nth-child(2) .polaroid-photo {
+    height: 220px !important;
+  }
+
+  .polaroid:nth-child(3) {
+    right: 3% !important;
+    top: 20% !important;
+    transform: rotate(9deg) !important;
+  }
+
+  .polaroid:nth-child(1):hover {
+    transform: rotate(-10deg) translateY(-10px) !important;
+  }
+
+  .polaroid:nth-child(2):hover {
+    transform: translateX(-50%) rotate(2deg) translateY(-10px) !important;
+  }
+
+  .polaroid:nth-child(3):hover {
+    transform: rotate(9deg) translateY(-10px) !important;
+  }
+}
+
+/* SMALL TABLETS - 640px */
 @media (max-width: 640px) {
+  .polaroids-container {
+    height: 60vh !important;
+    max-height: 500px;
+    min-height: 350px;
+  }
+
   .wish-text h1 {
     font-size: 2.5rem;
   }
 
+  /* Reduce size for smaller screens */
   .polaroid {
-    width: 140px;
+    width: 170px !important;
   }
 
   .polaroid-photo {
-    height: 140px;
+    height: 170px !important;
+  }
+
+  .polaroid:nth-child(1) {
+    left: 2% !important;
+    top: 20% !important;
+    transform: rotate(-9deg) !important;
+  }
+
+  .polaroid:nth-child(2) {
+    left: 50% !important;
+    top: 26% !important;
+    transform: translateX(-50%) rotate(1deg) !important;
+    width: 200px !important;
+  }
+
+  .polaroid:nth-child(2) .polaroid-photo {
+    height: 200px !important;
+  }
+
+  .polaroid:nth-child(3) {
+    right: 2% !important;
+    top: 23% !important;
+    transform: rotate(8deg) !important;
+  }
+
+  .polaroid:nth-child(1):hover {
+    transform: rotate(-9deg) translateY(-8px) !important;
+  }
+
+  .polaroid:nth-child(2):hover {
+    transform: translateX(-50%) rotate(1deg) translateY(-8px) !important;
+  }
+
+  .polaroid:nth-child(3):hover {
+    transform: rotate(8deg) translateY(-8px) !important;
+  }
+}
+
+/* MOBILE PHONES - 480px */
+@media (max-width: 480px) {
+  .polaroids-container {
+    height: 55vh !important;
+    max-height: 450px;
+    min-height: 320px;
+  }
+
+  .wish-text h1 {
+    font-size: 2rem;
+  }
+
+  /* Mobile size */
+  .polaroid {
+    width: 140px !important;
+  }
+
+  .polaroid-photo {
+    height: 140px !important;
+  }
+
+  .polaroid-caption {
+    font-size: 0.75rem;
+  }
+
+  .polaroid:nth-child(1) {
+    left: 1% !important;
+    top: 22% !important;
+    transform: rotate(-11deg) !important;
+  }
+
+  .polaroid:nth-child(2) {
+    left: 50% !important;
+    top: 28% !important;
+    transform: translateX(-50%) rotate(2deg) !important;
+    width: 170px !important;
+  }
+
+  .polaroid:nth-child(2) .polaroid-photo {
+    height: 170px !important;
+  }
+
+  .polaroid:nth-child(3) {
+    right: 1% !important;
+    top: 25% !important;
+    transform: rotate(9deg) !important;
+  }
+
+  .polaroid:nth-child(1):hover {
+    transform: rotate(-11deg) translateY(-6px) !important;
+  }
+
+  .polaroid:nth-child(2):hover {
+    transform: translateX(-50%) rotate(2deg) translateY(-6px) !important;
+  }
+
+  .polaroid:nth-child(3):hover {
+    transform: rotate(9deg) translateY(-6px) !important;
+  }
+}
+
+/* EXTRA SMALL MOBILE - 380px */
+@media (max-width: 380px) {
+  .polaroids-container {
+    height: 50vh !important;
+    max-height: 400px;
+    min-height: 280px;
+  }
+
+  .wish-text h1 {
+    font-size: 1.75rem;
+  }
+
+  /* Smallest size */
+  .polaroid {
+    width: 115px !important;
+  }
+
+  .polaroid-photo {
+    height: 115px !important;
+  }
+
+  .polaroid-caption {
+    font-size: 0.7rem;
+  }
+
+  .polaroid:nth-child(1) {
+    left: 1% !important;
+    top: 24% !important;
+    transform: rotate(-10deg) !important;
+  }
+
+  .polaroid:nth-child(2) {
+    left: 50% !important;
+    top: 30% !important;
+    transform: translateX(-50%) rotate(1deg) !important;
+    width: 145px !important;
+  }
+
+  .polaroid:nth-child(2) .polaroid-photo {
+    height: 145px !important;
+  }
+
+  .polaroid:nth-child(3) {
+    right: 1% !important;
+    top: 27% !important;
+    transform: rotate(8deg) !important;
+  }
+
+  .polaroid:nth-child(1):hover {
+    transform: rotate(-10deg) translateY(-5px) !important;
+  }
+
+  .polaroid:nth-child(2):hover {
+    transform: translateX(-50%) rotate(1deg) translateY(-5px) !important;
+  }
+
+  .polaroid:nth-child(3):hover {
+    transform: rotate(8deg) translateY(-5px) !important;
   }
 }
 
@@ -480,6 +848,7 @@ body{
   .vintage-paper {
     padding: 2rem 1.5rem;
     max-width: 95%;
+    max-height: 75vh;
   }
 
   .letter-greeting {
@@ -513,6 +882,7 @@ body{
 @media (max-width: 480px) {
   .vintage-paper {
     padding: 1.5rem 1rem;
+    max-height: 70vh;
   }
 
   .letter-text {

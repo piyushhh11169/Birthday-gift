@@ -6,6 +6,27 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import tempPhoto from '../assets/temp/tempPhoto.jpg';
 import '../assets/css/Home.css';
 
+import hero1 from '../assets/Collage/2.jpg';
+import hero2 from '../assets/Collage/27.jpg';
+import hero3 from '../assets/Collage/17.jpg';
+
+import image1 from '../assets/Collage/4.jpg';
+import image2 from '../assets/Collage/6.jpg';
+import image4 from '../assets/Collage/31.jpg';
+import image5 from '../assets/Collage/32.jpg';
+import image6 from '../assets/Collage/37.jpg';
+import image7 from '../assets/Collage/38.jpg';
+
+
+import image9 from '../assets/Collage/18.jpg';
+import image10 from '../assets/Collage/25.jpg';
+import image11 from '../assets/Collage/27.jpg';
+import image12 from '../assets/Collage/35.jpg';
+
+
+
+
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function MainPage() {
@@ -18,13 +39,19 @@ export default function MainPage() {
   const autoPlayRef = useRef<number | null>(null);
 
 
+
   /* ------------------ Carousel Data ------------------ */
   const slides = [
-    { id: 1, image: tempPhoto, caption: 'Our First Date' },
-    { id: 2, image: tempPhoto, caption: 'Summer Adventures' },
-    { id: 3, image: tempPhoto, caption: 'Together Forever' },
-    { id: 4, image: tempPhoto, caption: 'Special Moments' },
-    { id: 5, image: tempPhoto, caption: 'Beautiful Days' },
+    { id: 1, image: image1, caption: 'what a pose!😉' },
+    { id: 2, image: image2, caption: 'Temperature is getting high!🥵' },
+    { id: 4, image: image4, caption: 'What a night it was, You did make up and looking sooooo beautifull!' },
+    { id: 5, image: image5, caption: 'Bindi with this smile, uufff😘' },
+    { id: 5, image: image6, caption: 'What a cuteness' },
+    { id: 5, image: image7, caption: 'looking so innocent and cute' },
+    { id: 5, image: image9, caption: 'This loook, will kill me' },
+    { id: 5, image: image10, caption: 'kya hi sundar lg rhe ho aap' },
+    { id: 5, image: image11, caption: 'Damn, This beautyy' },
+    { id: 5, image: image12, caption: 'koi itna cute kese lg skta h' },
   ];
 
   /* ------------------ Carousel Logic ------------------ */
@@ -223,30 +250,53 @@ export default function MainPage() {
           ))}
         </div>
 
-        <div className="container-main max-w-7xl w-full px-8 flex items-center justify-between gap-16">
-          <div className="wish-text flex-1">
-            <h1 className="text-7xl font-bold text-gray-800">
+        <button 
+          onClick={()=>{
+            localStorage.removeItem('auth_secret_key');
+            window.location.reload();
+          }}
+          className='logout-btn'
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Log Out
+        </button>
+
+        <div className="container-main max-w-7xl w-full px-8 flex items-center justify-between gap-16 flex-col-reverse lg:flex-row">
+          
+        
+          <div className="wish-text flex-1 text-center lg:text-left">
+            
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-800">
               <span className="inline-block">Happy</span>{' '}
               <span className="inline-block">Birthday</span>{' '}
               <span className="inline-block text-pink-600">My Love ❤️</span>
             </h1>
           </div>
 
-          <div className="polaroids-container flex-1 relative h-96 flex items-center justify-center">
-            <div className="polaroid absolute" style={{ transform: 'rotate(-10deg)', left: '1%', top: '2%' }}>
+        
+          <div className="polaroids-container h-64 flex-1 relative sm:h-80 md:h-96 lg:h-96 flex items-center justify-center w-full">
+            <div className="polaroid absolute" style={{ transform: 'rotate(-10deg)', left: '0%', top: '0%' }}>
               <div className="polaroid-photo">
-                <img src={tempPhoto} className="w-full h-full object-cover" alt="Memory 1" />
+                <img src={hero1} className="w-full h-full object-cover" alt="Memory 1" />
               </div>
               <p className="polaroid-caption">Memory 1</p>
             </div>
 
             <div className="polaroid absolute" style={{ transform: 'rotate(5deg)', left: '25%', top: '25%' }}>
-              <div className="polaroid-photo bg-gradient-to-br from-blue-200 to-pink-200" />
+              <div className="polaroid-photo bg-gradient-to-br from-blue-200 to-pink-200">
+              <img src={hero2} className="w-full h-full object-cover" alt="Memory 2" />
+              </div>
               <p className="polaroid-caption">Memory 2</p>
             </div>
 
             <div className="polaroid absolute" style={{ transform: 'rotate(9deg)', right: '6%', top: '5%' }}>
-              <div className="polaroid-photo bg-gradient-to-br from-yellow-200 to-pink-200" />
+              <div className="polaroid-photo bg-gradient-to-br from-yellow-200 to-pink-200">
+              <img src={hero3} className="w-full h-full object-full" alt="Memory 2" />
+              </div>
               <p className="polaroid-caption">Memory 3</p>
             </div>
           </div>
@@ -254,6 +304,7 @@ export default function MainPage() {
       </section>
 
       {/* ================= LETTER SECTION ================= */}
+      {/* NO CHANGES BELOW THIS LINE - Everything else remains exactly the same */}
       <section ref={letterRef} className="letter-section h-screen w-full flex justify-center items-center relative overflow-hidden">
         {/* Floating flowers background */}
         <div className="floating-flowers-bg">
@@ -272,35 +323,63 @@ export default function MainPage() {
           ))}
         </div>
 
+        
+
         {/* Vintage Paper Letter */}
         <div className="vintage-paper">
+
           <div className="paper-content">
             {/* Letter Header */}
             <div className="letter-header">
-              <p className="letter-line letter-date">January 24, 2026</p>
+              <p className="letter-date">January 30, 2026</p>
             </div>
 
-            {/* Letter Body */}
+            {/* Letter Body */} 
             <div className="letter-body">
-              <p className="letter-line letter-greeting">My Dearest Love,</p>
+              <p className="letter-line letter-greeting">Happy Birthday Jaan,</p>
 
               <p className="letter-line letter-text">
-                On this special day, I want you to know how much you mean to me.
+              I know ye thoda unique way h letter dene ka but thiss long distance....
+to maine socha ki ek site banaya jaye
+I hope aapko ye site acha laga ho. Aapka favourite color pink h, isiliye maine pink theme me banaya h 
               </p>
 
               <p className="letter-line letter-text">
-                Every moment with you is a treasure, every smile you share lights up my world,
-                and every day by your side is a gift I cherish deeply.
+              I hope you understand my situation now, aapse vc bhi nhi kr paunga. Mera destiny kuch khrb sa h, aapke birthday ke din hi meeting aa gya. Isliye maine ek video banaya tha aapko wish kaarne ke liye (thoda rude face tha, I know).
               </p>
 
               <p className="letter-line letter-text">
-                You've brought so much joy, laughter, and love into my life, and I'm
-                endlessly grateful for everything we've shared together.
+              This day is very special for me as today is my love birthday or I can say my girl birthday.
+I know maine aapke liye kuch gift nhi liya, but gift to aapko in-person dunga 😘.
               </p>
 
               <p className="letter-line letter-text">
-                Happy Birthday, my love. Here's to many more beautiful memories,
-                adventures, and moments that make life extraordinary.
+              (pata nhi aaj itna kese likh diya maine) 
+              </p>
+              <p className="letter-line letter-text">
+              I come to know about this beautifull feeling because of you
+You are the reason I belive in love, maine abhi tk kisi ke liye bhi aisa feel nhi kiya jesa mai aapke liye krta hun... I LOVE YOU.
+              </p>
+              <p className="letter-line letter-text">
+              I have never thought that someone can love the way you love me, my girl. Mujhe nhi laga tha ki iss rude personality koi love kr skta h. Aapne mere iss rude personality ko jhela aur isse soft bana diya. Sorry, agar maine kabhi bhi(I mean mostly) rudely behave kiya hoga aur aapko bura laga ho.
+              </p>
+              <p className="letter-line letter-text">
+              Wese aaj birthday to aapka h, but you give me gifts everyday by saying I LOVE YOU
+and I will never forget the day when you say I love you first time. that day was the best day of my life.
+              </p>
+              <p className="letter-line letter-text">
+              Aur aapki beauty ki kya hi baat kru mai, every time I start admiring you, I end up never satisfied because the more I see you, the more I want. As I said earlier, In a most selfish way, no one will admire you the way I admires you.
+I never find anyone as beautifull and cute like you. 
+I love everything about you and which is related to you.
+              </p>
+              <p/>
+              <p className='letter-line letter-text'>
+              Whenever I feel sad or don't feel good, talking to you and seeing your picture makes me feel relieved and brings happiness.
+              At Last, Remember one thing, whatever the situation would be in future, you will always be loved by me. There is no any other situation exists in which I cannot love you.
+              </p>
+
+              <p className='letter-line letter-text'>
+              You are the reason for my smile.. Thank you for everything you does to me knowingly or unknowingly.
               </p>
 
               <p className="letter-line letter-closing">
@@ -347,8 +426,11 @@ export default function MainPage() {
         </div>
 
         <h2 className="carousel-title text-5xl font-bold mb-24 z-10">
-          Our Beautiful Memories 💕
+          Admiring You💕
         </h2>
+        <p className="carousel z-10 text-center">
+          These are the some photos of you I adore the most.
+        </p>
 
         <div ref={carouselRef} className="carousel-container relative w-full max-w-6xl px-4 z-10">
           {/* Navigation Arrows */}
@@ -378,7 +460,7 @@ export default function MainPage() {
             </svg>
           </button>
 
-          <div className="cards-wrapper flex justify-center items-center gap-8">
+          <div className="cards-wrapper flex justify-center items-center gap-8 h-[420px]">
             <div className="carousel-card side-card" onClick={() => {
               stopAutoPlay();
               prevSlide();
