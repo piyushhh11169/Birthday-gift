@@ -381,9 +381,13 @@ I love everything about you and which is related to you.
               <p className='letter-line letter-text'>
               You are the reason for my smile.. Thank you for everything you does to me knowingly or unknowingly.
               </p>
+              <p className='letter-line letter-text'>
+                Again, Happy Birthday My Love.
+                I hope aapka aaj ka din sabse jyada acha jaye.
+              </p>
 
               <p className="letter-line letter-closing">
-                Forever yours,
+                I LOVE YOU ❤️
                 <br />
                 <span className="signature">Your Love</span>
               </p>
