@@ -514,59 +514,9 @@ I love everything about you and which is related to you.
         </div>
       </section>
 
-
-      <section ref={letterRef} className="letter-section h-screen w-full flex flex-col gap-4 justify-center items-center relative overflow-hidden">
-        {/* Floating flowers background */}
-        <div className="floating-flowers-bg">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={`letter-${i}`}
-              className="flower-bg"
-              style={{
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.5}s`,
-                animationDuration: `${15 + Math.random() * 10}s`,
-              }}
-            >
-              🌸
-            </div>
-          ))}
-        </div>
-
-        
-
-        {/* Vintage Paper Letter */}
-        <div className="vintage-paper">
-          <div className="paper-content">
-            {/* Letter Body */} 
-            <div className="letter-body">
-              <p className="letter-line letter-greeting">March 17, 2026</p>
-              <p className="letter-line letter-text">
-              I am sorry maine uss din raat me kuch jyada gussa me bol diya aur bol diya ki main aapse kabhi bhi baat nhi karunga, but this is not possible for me, to main aapse baat krna to nhi chod skta issiliye maine socha ki ek letter likh du, kya pata aap kabhi iss site ko kholo to dekh lo.
-              Abhi main jab ye likh rha hu to shayd aap train me honge kyuki abhi 7 bj rhe h aur aapki train abhi nikl rhi hogi.
-              </p>
-              <p className="letter-line letter-text">
-               I miss you so much my love. I know maine bahut si galtiya ki h aur mujhe maaf nhi kr skte. But please dont judge my feeling for you because of this situation. 
-              </p>
-              <p className="letter-line letter-text">
-                Mujhe pata h aap kesa feel kiye hoge uss raat jab aapne wo question pucha mujhse. Being honest I dont have the courage to accept you in front of my so called friends because of the criticism aur main uss time bahut confuse tha kyuki maine iss baare me jyada nhi socha aur mujhe baad me realize ki main kab tak aapko aise hi sabse chupa ke rakhunga aur main ye bhool gya ki mere se jyada log aapko criticize karenge and still you chose me. You dont want to talk me now and i deserve this and i think you dont want to be with that men who does not accept you because of fear of criticism. and i dont have the right to say I love you, but let me be clear that I love you.
-              </p>
-              <p className="letter-line letter-text">
-                I think you deserve a good man who can accept you without any criticism and as i said I will always love you the same way and never force you to be with me but i will always love you and want you to be happy.
-              </p>
-
-              <p className="letter-line letter-text">
-                I hope aapko ye letter mil jaye, and i hope you understand my feelings through this letter. I am really sorry for hurting you and i will try to be a better person in future.
-              </p>
-
-            </div>
-          </div>
-        </div>
-
-        
-
-
-      </section>
+      
+      
+       
 
     </main>
   );
