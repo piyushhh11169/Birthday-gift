@@ -562,9 +562,7 @@ I love everything about you and which is related to you.
               <p className="letter-line letter-text">
                 Pata h, 24 feb ki raat jab aapne mujhe bola tha ki you dont want relationship things, that was the day i felt the worst and i never slept that night. But next day after talking to you, I feel good.
               </p>
-              <p className="letter-line letter-text">
-                Again i am telling you please dont judge my love for you because of this situation. My love for you is the purest feeling i have ever had for someone. 
-              </p>
+              
               <p className="letter-line letter-text">
                 Whenever i feel low, I see the picture of you. That makes my day better and hum future me kabhi mile ya nhi but the memory you gave me will be the best memories of my life.
               </p>
