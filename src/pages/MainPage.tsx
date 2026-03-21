@@ -517,69 +517,7 @@ I love everything about you and which is related to you.
 
       
 
-      <section ref={letterRef} className="letter-section h-screen w-full flex justify-center items-center relative overflow-hidden">
-        {/* Floating flowers background */}
-        <div className="floating-flowers-bg">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={`letter-${i}`}
-              className="flower-bg"
-              style={{
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.5}s`,
-                animationDuration: `${15 + Math.random() * 10}s`,
-              }}
-            >
-              🌸
-            </div>
-          ))}
-        </div>
-
-        
-
-        {/* Vintage Paper Letter */}
-        <div className="vintage-paper">
-
-          <div className="paper-content">
-
-            {/* Letter Body */} 
-            <div className="letter-body">
-              <p className="letter-line letter-greeting">March 20, 2026</p>
-
-              <p className="letter-line letter-text">
-              Hello My love, Pata nhi kaha se start karu but bahut si chize mann me chall rhi h, socha apko bol du but aapse baat to ho nhi rhi to ye letter likh raha hu ki kabhi to aap iss site ko khologe aur iss letter ko padhoge, 
-              </p>
-              <p className="letter-line letter-text">
-                Sabse pehele to Sorry, i know maine bahut baar sorry bola h kyuki main har baar glti kr deta hu, but i am really sorry ki uss raat gusse me bol diya jabki glti meri thi. Maine aapke baare me nhi socha ki aap kis situation me ho, now I realize ki uss raat jab humari baat hui thi jab maine wo sab baate boli thi uske baad how you feel. 
-              </p>
-              <p className="letter-line letter-text">
-                i know main baar baar ek baat pe atak gya hu but this is what which comes to  my mind again and again. aapne uss din ek question pucha tha ki agar log mereko criticize karenge to kya main aapko accept karunga, aur mene kuch nhi bola tha, kyuki ye sawal maine bahut baar socha aur main isske conclusion tk kabhi nhi pahunch paya,but now i am very sure that i want you in my life.
-                Mujhe ab koi bhi criticizm se fark nhi padta
-              </p>
-              <p className="letter-line letter-text">
-                Literally, I was very blessed to have you in my life as a friend and as a girlfriend
-              </p>
-              <p className="letter-line letter-text">
-                Pata h, 24 feb ki raat jab aapne mujhe bola tha ki you dont want relationship things, that was the day i felt the worst and i never slept that night. But next day after talking to you, I feel good.
-              </p>
-              
-              <p className="letter-line letter-text">
-                Whenever i feel low, I see the picture of you. That makes my day better and hum future me kabhi mile ya nhi but the memory you gave me will be the best memories of my life.
-              </p>
-              <p className="letter-line letter-text">
-                Now, I dont want ki mera obession aapke liye kabhi bhi kam ho. I want to love you more and more every day.
-              </p>
-              <p className="letter-line letter-text">
-                At Last, I want to say that, I will always be there for you, no matter what happens in future. I will always love you and support you in every situation. You are the most important person in my life and I will never let you down.
-              </p>
-              <p className="letter-line letter-closing">
-                I LOVE YOU ❤️
-              </p>
-            </div>
-            
-          </div>
-        </div>
-      </section>
+      
 
       
      
